@@ -1,5 +1,6 @@
 package abcd.com.basiccalculator;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener{
     private Button btnadd, btnsub, btnmult, btndiv,btnequal, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, btndel;
     private TextView tvresult;
     private EditText etexpression;
