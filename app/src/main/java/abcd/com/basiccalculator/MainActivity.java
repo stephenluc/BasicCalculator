@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import abcd.com.basiccalculator.Evaluators.InToPost;
+import abcd.com.basiccalculator.Evaluators.PostFixCal;
 
 public class MainActivity extends Activity implements View.OnClickListener{
-    private Button btnadd, btnsub, btnmult, btndiv,btnequal, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, btndel;
+    Button btnadd, btnsub, btnmult, btndiv,btnequal, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, btndel, btnLBracket, btnRBracket;
     private TextView tvresult;
     private EditText etexpression;
     private boolean blnclear, blnDecimal = true;
@@ -40,6 +41,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btn0 = (Button) findViewById(R.id.btn0);
         btndot = (Button) findViewById(R.id.btnDot);
         btndel = (Button) findViewById(R.id.btnDel);
+        btnLBracket = (Button) findViewById(R.id.btnLBracket);
+        btnRBracket = (Button) findViewById(R.id.btnRBracket);
 
         etexpression = (EditText) findViewById(R.id.etExpression);
 
@@ -62,22 +65,27 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btn0.setOnClickListener(this);
         btndot.setOnClickListener(this);
         btndel.setOnClickListener(this);
+        btnLBracket.setOnClickListener(this);
+        btnRBracket.setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View view) {
         String expression = etexpression.getText().toString();
-        int intLength;
-        float subtotal;
-        String var1 = "", var2 = "", var3 = "";
+
         switch(view.getId()){
             case R.id.btnDel:
                 if (blnclear){
                     clearAll();
                 }else{
                     try{
-                        etexpression.setText(expression.substring(0,expression.length() - 1));
+                        if (expression.substring(expression.length() - 1).equals(".")){
+                            blnDecimal = true;
+                        }
+                        else if (expression.substring(expression.length() - 1).matches("^[\\/\\+\\-]|[x]$")){
+                            blnDecimal = false;
+                        }
+                        etexpression.setText(expression.substring(0, expression.length() - 1));
                         tvresult.setText("");
                     }catch(Exception e){
                         System.out.println("back space too much");
@@ -99,6 +107,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.btnDot:
                 validInput(".");
+                break;
+            case R.id.btnLBracket:
+                validInput("(");
+                break;
+            case R.id.btnRBracket:
+                validInput(")");
                 break;
             case R.id.btn1:
                 inputNumbers("1");
@@ -131,165 +145,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 inputNumbers("0");
                 break;
             case R.id.btnEqual:
-                expression = expression.replace('x', '*');
-                if (expression.matches("^([-+]?[0-9]*\\.?[0-9]+[\\/\\+\\-\\*])+([-+]?[0-9]*\\.?[0-9]+)+$")) {
-                    intLength = expression.length();
-                    int numOperators = 0, periodCount = 0;
-                    subtotal = 0;
-                    String operatorSign1 = "", operatorSign2 = "";
-                    Boolean error = false;
-
-                    for (int intCount = 0; intCount < intLength; intCount++) {
-                        if (expression.substring(intCount, intCount + 1).matches("^[0-9]+$") && numOperators == 0) {
-                            var1 = var1 + expression.substring(intCount, intCount + 1);
-                            if (expression.substring(intCount + 1, intCount + 2).matches("^[\\/\\+\\-\\*]+$")) {
-                                numOperators++;
-                            }
-                        } else if (expression.substring(intCount, intCount + 1).matches("^[0-9]+$") && numOperators == 2) {
-                            var2 = var2 + expression.substring(intCount, intCount + 1);
-                            if (intCount + 1 == intLength) {
-                                numOperators = 1;
-                                break;
-                            } else if (expression.substring(intCount + 1, intCount + 2).matches("^[\\/\\+\\-\\*]+$")) {
-                                numOperators++;
-                            }
-                        } else if (expression.substring(intCount, intCount + 1).matches("^[0-9]+$") && numOperators == 4) {
-                            var3 = var3 + expression.substring(intCount, intCount + 1);
-                            if (intCount + 1 == intLength) {
-                                numOperators = 2;
-                                break;
-                            } else if (expression.substring(intCount + 1, intCount + 2).matches("^[\\/\\+\\-\\*]+$")) {
-                                numOperators++;
-                            }
-                        } else if (expression.substring(intCount, intCount + 1).matches("^[\\/\\+\\-\\*]+$")){
-                            if (numOperators == 1) {
-                                operatorSign1 = expression.substring(intCount, intCount + 1);
-                            } else if (numOperators == 3) {
-                                operatorSign2 = expression.substring(intCount, intCount + 1);
-                            }
-                            numOperators++;
-                            periodCount = 0;
-                        } else {
-                            if (numOperators == 0){
-                                var1 = var1 + expression.substring(intCount, intCount + 1);
-                                periodCount++;
-                            } else if (numOperators == 2){
-                                var2 = var2 + expression.substring(intCount, intCount + 1);
-                                periodCount++;
-                            } else if (numOperators == 4){
-                                var3 = var3 + expression.substring(intCount, intCount + 1);
-                                periodCount++;
-                            }
-                        }
-
-                        if (periodCount > 1){
-                            error = true;
-                            break;
-                        }
-
-                        if (numOperators == 5 && !operatorSign2.equals("*") && !operatorSign2.equals("/")) {
-                            if (operatorSign1.equals("+")) {
-                                subtotal = (Float.parseFloat(var1) + Float.parseFloat(var2));
-                                var1 = Float.toString(subtotal);
-                                var2 = var3;
-                                var3 = "";
-                                numOperators = 3;
-                                operatorSign1 = operatorSign2;
-                            } else if (operatorSign1.equals("-")) {
-                                subtotal = (Float.parseFloat(var1) - Float.parseFloat(var2));
-                                var1 = Float.toString(subtotal);
-                                var2 = var3;
-                                var3 = "";
-                                numOperators = 3;
-                                operatorSign1 = operatorSign2;
-                            }
-                        }else if (numOperators == 5 && operatorSign2.equals("*")){
-                            subtotal = (Float.parseFloat(var2) * Float.parseFloat(var3));
-                            var2 = Float.toString(subtotal);
-                            var3 = "";
-                            numOperators = 3;
-                            operatorSign2 = "";
-                        }else if (numOperators == 5 && operatorSign2.equals("/")){
-                            subtotal = (Float.parseFloat(var2) / Float.parseFloat(var3));
-                            var2 = Float.toString(subtotal);
-                            var3 = "";
-                            numOperators = 3;
-                            operatorSign2 = "";
-                        }else if (numOperators == 3 && operatorSign1.equals("*")){
-                            subtotal = (Float.parseFloat(var1) * Float.parseFloat(var2));
-                            var1 = Float.toString(subtotal);
-                            var2 = var3;
-                            var3 = "";
-                            numOperators = 1;
-                            operatorSign1 = "";
-                        }else if (numOperators == 3 && operatorSign1.equals("/")){
-                            subtotal = (Float.parseFloat(var1) / Float.parseFloat(var2));
-                            var1 = Float.toString(subtotal);
-                            var2 = var3;
-                            var3 = "";
-                            numOperators = 1;
-                            operatorSign1 = "";
-                        }
-                    }
-
-                    if (numOperators == 1){
-                        if (operatorSign1.equals("+")){
-                            subtotal = (Float.parseFloat(var1) + Float.parseFloat(var2));
-                        } else if (operatorSign1.equals("-")){
-                            subtotal = (Float.parseFloat(var1) - Float.parseFloat(var2));
-                        } else if (operatorSign1.equals("*")){
-                            subtotal = (Float.parseFloat(var1) * Float.parseFloat(var2));
-                        } else if (operatorSign1.equals("/")){
-                            subtotal = (Float.parseFloat(var1) / Float.parseFloat(var2));
-                        }
-                    } else if (numOperators == 2){
-                        if (operatorSign1.equals("+") && operatorSign2.equals("+")){                          //ADDITION
-                            subtotal = Float.parseFloat(var1) + Float.parseFloat(var2) + Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("+") && operatorSign2.equals("-")){
-                            subtotal = Float.parseFloat(var1) + Float.parseFloat(var2) - Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("+") && operatorSign2.equals("*")){
-                            subtotal = Float.parseFloat(var1) + (Float.parseFloat(var2) * Float.parseFloat(var3));
-                        } else if (operatorSign1.equals("+") && operatorSign2.equals("/")){
-                            subtotal = Float.parseFloat(var1) + (Float.parseFloat(var2) / Float.parseFloat(var3));
-                        } else if (operatorSign1.equals("-") && operatorSign2.equals("+")){                    //SUBTRACTION
-                            subtotal = Float.parseFloat(var1) - Float.parseFloat(var2) + Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("-") && operatorSign2.equals("-")){
-                            subtotal = Float.parseFloat(var1) - Float.parseFloat(var2) - Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("-") && operatorSign2.equals("*")){
-                            subtotal = Float.parseFloat(var1) - (Float.parseFloat(var2) * Float.parseFloat(var3));
-                        } else if (operatorSign1.equals("-") && operatorSign2.equals("/")){
-                            subtotal = Float.parseFloat(var1) - (Float.parseFloat(var2) / Float.parseFloat(var3));
-                        } else if (operatorSign1.equals("*") && operatorSign2.equals("+")){                    //MULTIPLICATION
-                            subtotal = Float.parseFloat(var1) * Float.parseFloat(var2) + Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("*") && operatorSign2.equals("-")){
-                            subtotal = Float.parseFloat(var1) * Float.parseFloat(var2) - Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("*") && operatorSign2.equals("*")){
-                            subtotal = Float.parseFloat(var1) * Float.parseFloat(var2) * Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("*") && operatorSign2.equals("/")){
-                            subtotal = Float.parseFloat(var1) * Float.parseFloat(var2) / Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("/") && operatorSign2.equals("+")){                    //DIVISION
-                            subtotal = Float.parseFloat(var1) / Float.parseFloat(var2) + Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("/") && operatorSign2.equals("-")){
-                            subtotal = Float.parseFloat(var1) / Float.parseFloat(var2) - Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("/") && operatorSign2.equals("*")){
-                            subtotal = Float.parseFloat(var1) / Float.parseFloat(var2) * Float.parseFloat(var3);
-                        } else if (operatorSign1.equals("/") && operatorSign2.equals("/")){
-                            subtotal = Float.parseFloat(var1) / Float.parseFloat(var2) / Float.parseFloat(var3);
-                        }
-                    }
-
-                    if (error){
-                        tvresult.setText("ERROR");
-                    }else{
-                        if (subtotal == (int)subtotal) {
-                            tvresult.setText(Integer.toString((int)subtotal));
-                        } else {
-                            tvresult.setText(Float.toString(subtotal));
-                        }
-                    }
-                } else {
-                    tvresult.setText("ERROR");
+                try {
+                    expression = expression.replace('x', '*');
+                    InToPost theTrans = new InToPost(expression);
+                    String output = theTrans.doTrans();
+                    System.out.println(output);
+                    PostFixCal cal = new PostFixCal(output);
+                    String total = cal.calculate();
+                    tvresult.setText(total);
                 }
+                catch (Exception e){
+                    tvresult.setText("Error");
+                }
+
                 btndel.setText("Clear");
                 blnclear = true;
                 blnDecimal = true;
@@ -297,39 +165,55 @@ public class MainActivity extends Activity implements View.OnClickListener{
          }
     }
 
-    private void validInput(String value){
+    private void validInput(String value) {
         clearAll();
         String expression = etexpression.getText().toString();
         expression = expression.replace('x', '*');
+        String last_input = "";
         try {
-            if (value.equals(".")){
-                if (expression.substring(expression.length() - 1, expression.length() - 0).matches("^[\\/\\+\\-\\*]+$")){
-                    expression = expression + "0.";
-                    expression = expression.replace('*', 'x');
-                    etexpression.setText(expression);
-                    blnDecimal = false;
-                }else if (blnDecimal){
-                    expression = expression + value;
-                    expression = expression.replace('*', 'x');
-                    etexpression.setText(expression);
-                    blnDecimal = false;
-                }
-            }else if (!expression.substring(expression.length() - 1, expression.length() - 0).matches("^[\\/\\+\\-\\*\\.]+$")) {
+            last_input = expression.substring(expression.length() - 1, expression.length());
+        } catch (Exception e) {
+            System.out.println("Empty expression");
+        }
+        if (value.equals(".")) {
+            if (last_input.matches("^[\\/\\+\\-\\*]$") || last_input.equals("")) {
+                expression = expression + "0.";
+                expression = expression.replace('*', 'x');
+                etexpression.setText(expression);
+                blnDecimal = false;
+            } else if (blnDecimal) {
                 expression = expression + value;
                 expression = expression.replace('*', 'x');
                 etexpression.setText(expression);
-                blnDecimal = true;
+                blnDecimal = false;
             }
-        }catch(Exception e) {
+        }else if (value.equals("(")){
+            if (last_input.matches("^[^0-9]$") || last_input.equals("")){
+                expression = expression + value;
+                expression = expression.replace('*', 'x');
+                etexpression.setText(expression);
+            }
+        } else if (!last_input.matches("^[\\/\\+\\-\\*\\.\\(]$")) {
+            expression = expression + value;
+            expression = expression.replace('*', 'x');
+            etexpression.setText(expression);
+            blnDecimal = true;
         }
+
     }
 
     private void inputNumbers (String value){
         clearAll();
         String expression = etexpression.getText().toString();
-        expression = expression + value;
-        etexpression.setText(expression);
-
+        try {
+            if (!expression.substring(expression.length() - 1, expression.length()).equals(")")) {
+                expression = expression + value;
+                etexpression.setText(expression);
+            }
+        }catch (Exception e){
+            expression = expression + value;
+            etexpression.setText(expression);
+        }
     }
 
     private void clearAll(){
