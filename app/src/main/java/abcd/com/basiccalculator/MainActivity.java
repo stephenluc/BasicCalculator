@@ -166,40 +166,48 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
 
     private void validInput(String value) {
-        clearAll();
+        String preans = tvresult.getText().toString();
         String expression = etexpression.getText().toString();
-        expression = expression.replace('x', '*');
         String last_input = "";
+
+        clearAll();
+
+        if (!preans.equals("")){
+            System.out.println(value);
+            expression = "";
+            blnDecimal = true;
+            System.out.println("PREANS");
+        }
         try {
             last_input = expression.substring(expression.length() - 1, expression.length());
         } catch (Exception e) {
             System.out.println("Empty expression");
         }
         if (value.equals(".")) {
-            if (last_input.matches("^[\\/\\+\\-\\*]$") || last_input.equals("")) {
-                expression = expression + "0.";
-                expression = expression.replace('*', 'x');
-                etexpression.setText(expression);
+            if (last_input.matches("^[\\/\\+\\-]|[x]$") || last_input.equals("")) {
+                expression = expression  + "0.";
                 blnDecimal = false;
             } else if (blnDecimal) {
                 expression = expression + value;
-                expression = expression.replace('*', 'x');
-                etexpression.setText(expression);
                 blnDecimal = false;
             }
-        }else if (value.equals("(")){
-            if (last_input.matches("^[^0-9]$") || last_input.equals("")){
+        } else if (value.equals("(")) {
+            if (last_input.matches("^[\\/\\+\\-]|[x]$") || last_input.equals("")) {
                 expression = expression + value;
-                expression = expression.replace('*', 'x');
-                etexpression.setText(expression);
             }
-        } else if (!last_input.matches("^[\\/\\+\\-\\*\\.\\(]$")) {
+        } else if (last_input.matches("^[^\\/\\+\\-\\.\\(]|[x]$") && !last_input.equals("")) {
             expression = expression + value;
-            expression = expression.replace('*', 'x');
-            etexpression.setText(expression);
+            blnDecimal = true;
+        } else if (value.matches("^[\\/\\+\\-]|[x]$") && !preans.equals("")){
+            if (Double.parseDouble(preans) < 0){
+                expression = "0" + preans + value;
+            }else{
+                expression = preans + value;
+            }
             blnDecimal = true;
         }
 
+        etexpression.setText(expression);
     }
 
     private void inputNumbers (String value){
