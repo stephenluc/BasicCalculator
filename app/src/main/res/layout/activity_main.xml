@@ -19,7 +19,7 @@ android:paddingLeft="@dimen/activity_vertical_margin">
     android:longClickable="false"
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true" />
+    android:layout_alignParentEnd="true"/>
 
 <TextView
     android:layout_width="wrap_content"
@@ -30,7 +30,8 @@ android:paddingLeft="@dimen/activity_vertical_margin">
     android:textStyle="bold"
     android:layout_below="@+id/etExpression"
     android:layout_alignRight="@+id/etExpression"
-    android:layout_alignEnd="@+id/etExpression" />
+    android:layout_alignEnd="@+id/etExpression"
+    android:layout_marginTop="20dp"/>
 
 <RelativeLayout
     android:layout_width="fill_parent"
@@ -58,39 +59,47 @@ android:paddingLeft="@dimen/activity_vertical_margin">
                 android:layout_height="0dp"
                 android:id="@+id/fillerCol1"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="7"
+                android:text="@string/btn7"
                 android:id="@+id/btn7"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="4"
+                android:text="@string/btn4"
                 android:id="@+id/btn4"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="1"
+                android:text="@string/btn1"
                 android:id="@+id/btn1"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="0"
+                android:text="@string/btn0"
                 android:id="@+id/btn0"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
         </LinearLayout>
 
@@ -102,44 +111,54 @@ android:paddingLeft="@dimen/activity_vertical_margin">
             android:layout_weight="0.25">
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="("
+                android:text="@string/btnLB"
                 android:id="@+id/btnLBracket"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="8"
+                android:text="@string/btn8"
                 android:id="@+id/btn8"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="5"
+                android:text="@string/btn5"
                 android:id="@+id/btn5"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="2"
+                android:text="@string/btn2"
                 android:id="@+id/btn2"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="."
+                android:text="@string/btnDot"
                 android:id="@+id/btnDot"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
         </LinearLayout>
 
@@ -151,44 +170,54 @@ android:paddingLeft="@dimen/activity_vertical_margin">
             android:layout_weight="0.25">
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text=")"
+                android:text="@string/btnRB"
                 android:id="@+id/btnRBracket"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="9"
+                android:text="@string/btn9"
                 android:id="@+id/btn9"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="6"
+                android:text="@string/btn6"
                 android:id="@+id/btn6"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="3"
+                android:text="@string/btn3"
                 android:id="@+id/btn3"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="="
+                android:text="@string/btnEq"
                 android:id="@+id/btnEqual"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
         </LinearLayout>
 
@@ -200,44 +229,54 @@ android:paddingLeft="@dimen/activity_vertical_margin">
             android:layout_weight="0.25">
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="Del"
+                android:text="@string/btnDel"
                 android:id="@+id/btnDel"
                 android:layout_weight="0.2"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin" />
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="+"
+                android:text="@string/btnAdd"
                 android:id="@+id/btnAdd"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="-"
+                android:text="@string/btnSub"
                 android:id="@+id/btnSub"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="*"
+                android:text="@string/btnMult"
                 android:id="@+id/btnMult"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
 
             <Button
+                android:background="@drawable/button_style"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="/"
+                android:text="@string/btnDiv"
                 android:id="@+id/btnDiv"
                 android:layout_weight="0.2"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:layout_margin="@dimen/button_margin"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
